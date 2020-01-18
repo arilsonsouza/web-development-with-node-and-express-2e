@@ -1,0 +1,30 @@
+{
+  "name": "meadowlark",
+  "version": "1.0.0",
+  "description": "",
+  "main": "meadowlark.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint meadowlark.js lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arilsonsouza/web-development-with-node-and-express-2e.git"
+  },
+  "author": "Arilson Souza",
+  "license": "(MIT OR GPL-3.0)",
+  "bugs": {
+    "url": "https://github.com/arilsonsouza/web-development-with-node-and-express-2e/issues"
+  },
+  "homepage": "https://github.com/arilsonsouza/web-development-with-node-and-express-2e#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "puppeteer": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "jest": "^24.9.0",
+    "portfinder": "^1.0.25"
+  }
+}
