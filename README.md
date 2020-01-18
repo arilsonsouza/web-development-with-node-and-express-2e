@@ -29,3 +29,7 @@ The Chapter 5 Example demonstrates unit testing with Jest, integration testing w
 ### Chapter 6
 
 The Chapter 6 Example uses small examples to demonstrate various useful features of Express, such as rendering views, using cookies and sessions, processing forms, and providing an API.
+
+### Chapter 7
+
+The Chapter 7 covers templating (using Handlebars), which lays the foundation of building useful websites with Express.
