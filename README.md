@@ -37,3 +37,7 @@ The Chapter 7 covers templating (using Handlebars), which lays the foundation of
 ### Chapter 8
 
 The Chapter 8, discuss the different methods for handling forms, form validation, and file uploads.
+
+### Chapter 9
+
+The Chapter 9 cover cookies, sessions, rounding out the things you need to know to build basic functional websites with Express.
