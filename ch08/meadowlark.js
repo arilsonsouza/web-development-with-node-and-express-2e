@@ -26,12 +26,16 @@ app.set('view cache', true)
 app.use(expess.static(__dirname + '/public'))
 app.use(weatherMiddleware)
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 app.get('/', handlers.home)
 
 app.get('/newsletter-signup', handlers.newsletterSignup)
 app.post('/newsletter-signup/process', handlers.newsletterSignupProcess)
 app.get('/newsletter-signup/thank-you', handlers.newsletterSignupThankYou)
+
+app.get('/newsletter', handlers.newsletter)
+app.post('/api/newsletter-signup', handlers.api.newsletterSignup)
 
 app.get('/about', handlers.about)
 app.get('/section-test', handlers.sectionTest)
