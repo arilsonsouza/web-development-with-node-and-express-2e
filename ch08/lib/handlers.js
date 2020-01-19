@@ -30,6 +30,16 @@ exports.api = {
     console.log(`Name (from visible form field): ${name}`)
     console.log(`Email (from visible form field): ${email}`)
     res.send({ result: 'success' })
+  },
+
+  vacationPhotoContest: (req, res, fields, files) => {
+    console.log('field data: ', fields)
+    console.log('files: ', files)
+    res.send({ result: 'success' })
+  },
+
+  vacationPhotoContestError: (req, res, message) => {
+    res.send({ result: 'error', error: message })
   }
 }
 
@@ -40,6 +50,11 @@ exports.newsletterSignupThankYou = (req, res) => {
 exports.vacationPhotoContest = (req, res) => {
   const now = new Date()
   res.render('contest/vacation-photo', { year: now.getFullYear(), month: now.getMonth() })
+}
+
+exports.vacationPhotoContestAjax = (req, res) => {
+  const now = new Date()
+  res.render('contest/vacation-photo-ajax', { year: now.getFullYear(), month: now.getMonth() })
 }
 
 exports.vacationPhotoContestThankYou = (req, res) => {
