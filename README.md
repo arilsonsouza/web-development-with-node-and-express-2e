@@ -41,3 +41,6 @@ The Chapter 8, discuss the different methods for handling forms, form validation
 ### Chapter 9
 
 The Chapter 9 cover cookies, sessions, rounding out the things you need to know to build basic functional websites with Express.
+
+### Chapter 10
+The Chapter 10 delves into middleware, a concept central to Express.
