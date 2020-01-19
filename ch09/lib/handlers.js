@@ -1,4 +1,18 @@
 const fortune = require('./fortune')
+const VALID_EMAIL_REGEX = new RegExp('^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@' +
+'[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?' +
+'(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$')
+
+class NewsletterSignup {
+  constructor({ name, email }) {
+    this.name = name
+    this.email = email
+  }
+
+  async save () {
+
+  }
+}
 
 exports.home = (req, res) => res.render('home')
 
@@ -10,18 +24,42 @@ exports.newsletterSignup = (req, res) =>  {
 }
 
 exports.newsletterSignupProcess = (req, res) => {
-  const { form } = req.query
-  const { _csrf, name, email } = req.body
-  console.log(`Form (from querystring): ${form}`)
-  console.log(`CSRF (from hidden form field): ${_csrf}`)
-  console.log(`Name (from visible form field): ${name}`)
-  console.log(`Email (from visible form field): ${email}`)
-  res.redirect(303, '/newsletter-signup/thank-you')
+  const { name = '', email = '' } = req.body
+
+  if (!VALID_EMAIL_REGEX.test(email)) {
+    req.session.flash = {
+      type: 'danger',
+      intro: 'Validation error!',
+      message: 'The email address you entered was not valid.'
+    }
+    return res.redirect(303, '/newsletter-signup')
+  }
+
+  new NewsletterSignup({ name, email }).save()
+    .then(() => {
+      req.session.flash = {
+        type: 'success',
+        intro: 'Thank you!',
+        message: 'You have now been signed up for newsletter.'
+      }
+      return res.redirect(303, '/newsletter-archive')
+    })    
+    // eslint-disable-next-line no-unused-vars
+    .catch(err => {
+      req.session.flash = {
+        type: 'danger',
+        intro: 'Database error!',
+        message: 'There was a database error; please try again later.'
+      }
+      return res.redirect(303, '/newsletter-archive')
+    })
 }
 
 exports.newsletter = (req, res) => {
   res.render('newsletter', { csrf: 'CSRF token goes here' })
 }
+
+exports.newsletterArchive = (req, res) => res.render('newsletter-archive')
 
 exports.api = {
   newsletterSignup: (req, res) => {

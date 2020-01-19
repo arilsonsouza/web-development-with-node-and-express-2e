@@ -3,9 +3,12 @@ const expressHandlebars = require('express-handlebars')
 const bodyParser = require('body-parser')
 const multiparty = require('multiparty')
 const cookieParser = require('cookie-parser')
+const expressSession = require('express-session')
 
 const handlers = require('./lib/handlers')
 const weatherMiddleware = require('./lib/middleware/weather')
+const flashMiddleware = require('./lib/middleware/flash')
+
 const { credentials } = require('./config')
 
 const app = expess()
@@ -27,16 +30,23 @@ app.set('view engine', 'handlebars')
 app.set('view cache', true)
 
 app.use(expess.static(__dirname + '/public'))
-app.use(weatherMiddleware)
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cookieParser(credentials.cookieSecret))
+app.use(expressSession({
+  resave: false,
+  saveUninitialized: false,
+  secret: credentials.cookieSecret
+}))
+app.use(weatherMiddleware)
+app.use(flashMiddleware)
 
 app.get('/', handlers.home)
 
 app.get('/newsletter-signup', handlers.newsletterSignup)
 app.post('/newsletter-signup/process', handlers.newsletterSignupProcess)
 app.get('/newsletter-signup/thank-you', handlers.newsletterSignupThankYou)
+app.get('/newsletter-archive', handlers.newsletterArchive)
 
 app.get('/newsletter', handlers.newsletter)
 app.post('/api/newsletter-signup', handlers.api.newsletterSignup)
