@@ -33,3 +33,7 @@ The Chapter 6 Example uses small examples to demonstrate various useful features
 ### Chapter 7
 
 The Chapter 7 covers templating (using Handlebars), which lays the foundation of building useful websites with Express.
+
+### Chapter 8
+
+The Chapter 8, discuss the different methods for handling forms, form validation, and file uploads.
