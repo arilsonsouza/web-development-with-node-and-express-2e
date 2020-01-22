@@ -1,4 +1,5 @@
 const fortune = require('./fortune')
+const db = require('../db')
 
 exports.home = (req, res) => res.render('home')
 
@@ -7,6 +8,20 @@ exports.about = (req, res) =>
 
 exports.newsletterSignup = (req, res) =>  {
   res.render('newsletter-signup', { csrf: 'CSRF token goes here'})
+}
+
+exports.listVacations = async (req, res) => {
+  const vacations = await db.getVacations({ available: true })
+  const context = {
+    vacations: vacations.map(vacation => ({
+      sku: vacation.sku,
+      name: vacation.name,
+      description: vacation.description,
+      price: '$' + vacation.price.toFixed(2),
+      inSeason: vacation.inSeason
+    }))
+  }
+  res.render('vacations', context)
 }
 
 exports.newsletterSignupProcess = (req, res) => {

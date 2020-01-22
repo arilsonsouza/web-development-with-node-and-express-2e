@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
 const { credentials } = require('./config')
 
-if (!credentials.connectionString) {
+if (!credentials.mongo.connectionString) {
   console.log('MongoDB connection string missing')
   process.exit(1)
 }
 
-mongoose.connect(credentials.connectionString, {
+mongoose.connect(credentials.mongo.connectionString, {
   useNewUrlParser: true
 })
 const db = mongoose.connection
@@ -68,36 +68,16 @@ Vacation.find((err, vacations) => {
   }).save()
 })
 
-module.exports = {
-  getVacations: async (options = {}) => {
-      const vacations = [
-      {
-        name: 'Hood River Day Trip',
-        slug: 'hood-river-day-trip',
-        category: 'Day Trip',
-        sku: 'HR199',
-        description: 'Spend a day sailing on the Columbia and '
-        + 'enjoying craft beers in Hood River!',
-        location: {
-        // we'll use this for geocoding later in the book
-        search: 'Hood River, Oregon, USA',
-        },
-        price: 99.95,
-        tags: ['day trip', 'hood river', 'sailing',
-        'windsurfing', 'breweries'],
-        inSeason: true,
-        maximumGuests: 16,
-        available: true,
-        packagesSold: 0,
-      }
-    ]
-    if (options.available !== undefined) 
-      return vacations.filter(({ available }) => available === options.available)
+const VacationInSeasonListener = require('./models/vacationInSeasonListener')
 
-      return vacations
-  },
+module.exports = {
+  getVacations: async (options = {}) => Vacation.find(options),
 
   addVacationInSeasonListener: async (email, sku) => {
-
+    await VacationInSeasonListener.updateOne(
+      { email },
+      { $push: { skus: sku } },
+      { upsert: true }
+    )
   }
 }
