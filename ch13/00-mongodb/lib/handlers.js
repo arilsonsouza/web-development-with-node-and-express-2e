@@ -24,6 +24,13 @@ exports.listVacations = async (req, res) => {
   res.render('vacations', context)
 }
 
+exports.notifyWhenInSeasonForm = (req, res) => res.render('notify-me-when-in-season', { sku: req.query.sku })
+exports.notifyWhenInSeasonProcess = async (req, res) => {
+  const { email, sku } = req.body
+  await db.addVacationInSeasonListener(email, sku)
+  return res.redirect(303, '/vacations')
+}
+
 exports.newsletterSignupProcess = (req, res) => {
   const { form } = req.query
   const { _csrf, name, email } = req.body
