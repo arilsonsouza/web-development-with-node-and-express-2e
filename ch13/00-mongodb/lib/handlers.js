@@ -10,9 +10,25 @@ exports.newsletterSignup = (req, res) =>  {
   res.render('newsletter-signup', { csrf: 'CSRF token goes here'})
 }
 
+exports.setCurrency = (req, res) => {
+  req.session.currency = req.params.currency
+  return res.redirect(303, '/vacations')
+}
+
+function convertFromUSD(value, currency) {
+  switch (currency) {
+    case 'USD': return value * 1
+    case 'GBP': return value * 0.79
+    case 'BTC': return value * 0.000078
+    default: return NaN
+  }
+}
+
 exports.listVacations = async (req, res) => {
   const vacations = await db.getVacations({ available: true })
+  const currency = req.session.currency || 'USD'
   const context = {
+    currency,
     vacations: vacations.map(vacation => ({
       sku: vacation.sku,
       name: vacation.name,
@@ -20,6 +36,11 @@ exports.listVacations = async (req, res) => {
       price: '$' + vacation.price.toFixed(2),
       inSeason: vacation.inSeason
     }))
+  }
+  switch (currency) {
+    case 'USD': context.currencyUSD = 'selected'; break
+    case 'GBP': context.currencyUSD = 'selected'; break
+    case 'BTC': context.currencyUSD = 'selected'; break
   }
   res.render('vacations', context)
 }
