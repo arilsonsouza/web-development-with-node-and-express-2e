@@ -4,7 +4,7 @@
     <h3 class="text-muted">Sign up for our newsletter to receive news and specials!</h3>
     <form class="form-horizontal" role="form"
         action="/newsletter-signup/process?form=newsletter" method="POST">
-      <input type="hidden" name="_csrf" value="{{csrf}}">
+      <input type="hidden" name="_csrf" value="{{_csrfToken}}">
       <div class="form-group">
         <label for="fieldName" class="col-sm-12 control-label">Name</label>
         <div class="col-sm-12">

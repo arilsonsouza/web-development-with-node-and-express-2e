@@ -5,10 +5,12 @@ const multiparty = require('multiparty')
 const cookieParser = require('cookie-parser')
 const expressSession = require('express-session')
 const RedisStore = require('connect-redis')(expressSession)
+const csrf = require('csurf')
 
 const { credentials } = require('./config')
 const handlers = require('./lib/handlers')
 const weatherMiddleware = require('./lib/middleware/weather')
+const createAuth = require('./lib/auth')
 
 const app = expess()
 const port = process.env.PORT || 3000
@@ -42,6 +44,29 @@ app.use(expressSession({
   //   url: credentials.redis.url
   // })
 }))
+
+// security configuration
+const auth = createAuth(app, {
+	// baseUrl is optional; it will default to localhost if you omit it;
+	// it can be helpful to set this if you're not working on
+	// your local machine.  For example, if you were using a staging server,
+	// you might set the BASE_URL environment variable to
+	// https://staging.meadowlark.com
+    baseUrl: process.env.BASE_URL,
+    providers: credentials.authProviders,
+    successRedirect: '/account',
+    failureRedirect: '/unauthorized',
+})
+// auth.init() links in Passport middleware:
+auth.init()
+// now we can specify our auth routes:
+auth.registerRoutes()
+
+app.use(csrf({ cookie: true }))
+app.use((req, res, next) => {
+  res.locals._csrfToken = req.csrfToken
+  next()
+})
 
 app.get('/', handlers.home)
 

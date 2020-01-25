@@ -69,6 +69,7 @@ Vacation.find((err, vacations) => {
 })
 
 const VacationInSeasonListener = require('./models/vacationInSeasonListener')
+const User = require('./models/user')
 
 module.exports = {
   getVacations: async (options = {}) => Vacation.find(options),
@@ -79,5 +80,10 @@ module.exports = {
       { $push: { skus: sku } },
       { upsert: true }
     )
-  }
+  },
+
+  getUserById: async id => User.findById(id),
+  getUserByAuthId: authId => User.findOne({ authId }),
+  addUser: async data => new User(data).save(),
+  close: () => mongoose.connection.close(),
 }
