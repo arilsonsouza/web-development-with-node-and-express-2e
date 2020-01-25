@@ -72,7 +72,7 @@ const VacationInSeasonListener = require('./models/vacationInSeasonListener')
 
 module.exports = {
   getVacations: async (options = {}) => Vacation.find(options),
-
+  getVacationBySku: async sku => Vacation.findOne({ sku }),
   addVacationInSeasonListener: async (email, sku) => {
     await VacationInSeasonListener.updateOne(
       { email },

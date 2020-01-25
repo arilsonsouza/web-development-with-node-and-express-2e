@@ -71,8 +71,15 @@ app.post('/contest/vacation-photo/:year/:month', (req, res) => {
   })
 })
 
+//api
 const cors = require('cors')
 app.use('/api', cors())
+const vhost = require('vhost')
+app.get('/', vhost('api.*', handlers.getVacationsApi))
+app.get('/api/vacations', handlers.getVacationsApi)
+app.get('/api/vacation/:sku', handlers.getVacationBySkuApi)
+app.post('/api/vacation/:sku/notify-when-in-season', handlers.addVacationInSeasonListenerApi)
+app.delete('/api/vacation/:sku', handlers.requestDeleteVacationApi)
 
 app.post('/api/newsletter-signup', handlers.api.newsletterSignup)
 app.post('/api/vacation-photo-contest/:year/:month', (req, res) => {
@@ -83,13 +90,6 @@ app.post('/api/vacation-photo-contest/:year/:month', (req, res) => {
   })
 })
 
-// api
-// const vhost = require('vhost')
-// app.get('/', vhost('api.*', handlers.getVacationsApi))
-// app.get('/api/vacations', handlers.getVacationsApi)
-// app.get('/api/vacation/:sku', handlers.getVacationBySkuApi)
-// app.post('/api/vacation/:sku/notify-when-in-season', handlers.addVacationInSeasonListenerApi)
-// app.delete('/api/vacation/:sku', handlers.requestDeleteVacationApi)
 
 
 // custom 404 page
