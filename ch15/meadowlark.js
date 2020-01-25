@@ -55,7 +55,6 @@ app.post('/newsletter-signup/process', handlers.newsletterSignupProcess)
 app.get('/newsletter-signup/thank-you', handlers.newsletterSignupThankYou)
 
 app.get('/newsletter', handlers.newsletter)
-app.post('/api/newsletter-signup', handlers.api.newsletterSignup)
 
 app.get('/about', handlers.about)
 app.get('/section-test', handlers.sectionTest)
@@ -72,6 +71,10 @@ app.post('/contest/vacation-photo/:year/:month', (req, res) => {
   })
 })
 
+const cors = require('cors')
+app.use('/api', cors())
+
+app.post('/api/newsletter-signup', handlers.api.newsletterSignup)
 app.post('/api/vacation-photo-contest/:year/:month', (req, res) => {
   const form = new multiparty.Form()
   form.parse(req, (err, fields, files) => {
