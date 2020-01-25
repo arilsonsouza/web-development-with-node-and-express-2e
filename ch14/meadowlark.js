@@ -38,9 +38,9 @@ app.use(expressSession({
   resave: false,
   saveUninitialized: false,
   secret: credentials.cookieSecret,
-  store: new RedisStore({
-    url: credentials.redis.url
-  })
+  // store: new RedisStore({
+  //   url: credentials.redis.url
+  // })
 }))
 
 app.get('/', handlers.home)
